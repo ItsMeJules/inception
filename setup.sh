@@ -8,11 +8,11 @@ RESET=`tput sgr0`
 
 APPS_NEEDED=("curl" "vim" "lsb-release" "git" "docker" "docker-compose-plugin")
 
-update_repostitories () { sudo apt-get -qq update || { echo "${RED}Failed to update exiting...${RESET}" ; exit 1; }; }
+update_repostitories () { sudo apt-get -yqq update || { echo "${RED}Failed to update exiting...${RESET}" ; exit 1; }; }
 
 docker_install () {
 	echo "[${GREEN}Docker${RESET}] ${YELLOW}Setting up the repository...${RESET}"
-	sudo apt-get -qq install ca-certificates gnupg \
+	sudo apt-get -yqq install ca-certificates gnupg \
 		|| { echo "${RED}Failed to update exiting...${RESET}" ; exit 1; }
 
 	echo "[${GREEN}Docker${RESET}] ${YELLOW}Adding Docker's official GPG key...${RESET}"
@@ -24,31 +24,32 @@ docker_install () {
 
 	echo "[${GREEN}Docker${RESET}] ${YELLOW}Installing the engine...${RESET}"
 	update_repostitories
-	sudo apt-get -qq install docker-ce docker-ce-cli containerd.io docker-compose-plugin \
+	sudo apt-get -yqq install docker-ce docker-ce-cli containerd.io docker-compose-plugin \
 		|| { echo "${RED}Failed to update exiting...${RESET}" ; exit 1; }
 	echo "[${GREEN}Docker${RESET}] ${BLUE}should be installed successfully.${RESET}"
 }
 
+echo "${GREEN}updating packages..."
 update_repostitories
 for app in "${APPS_NEEDED[@]}"; do
-	if [ $app == "lsb-release" ]; then
+	if [ "$app" = "lsb-release" ]; then
 		which lsb_release > /dev/null
-	elif [ $app == "docker-compose-plugin" ]; then
+	elif [ "$app" = "docker-compose-plugin" ]; then
 		docker compose --version > /dev/null
 	else
 		which $app > /dev/null
 	fi
 	rc=$?
-	if [ $rc == 0 ]; then
+	if [ $rc -eq 0 ]; then
 		echo "[${GREEN}$app${RESET}] ${YELLOW}is already installed.${RESET}"
 		continue
 	fi
-	if [ $app == "docker" ]; then
+	if [ "$app" = "docker" ]; then
 		docker_install
 		continue
 	fi
 	echo "[${GREEN}$app${RESET}] is being installed...${RESET}"
-	sudo apt-get -qq install $app > /dev/null \
+	sudo apt-get -yqq install $app > /dev/null \
 		|| { echo "${RED}Failed to update exiting...${RESET}" ; exit 1; }
 	echo "[${GREEN}$app${RESET}] ${BLUE}is now installed.${RESET}"
 done
