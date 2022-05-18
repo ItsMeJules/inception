@@ -1,0 +1,4 @@
+----------NGINX-----------
+nginx -c /etc/nginx/nginx.conf
+sudo docker build -t nginx .
+sudo docker run -it -p 80:80 nginx
