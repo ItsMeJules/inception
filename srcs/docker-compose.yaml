@@ -4,6 +4,42 @@ services:
     image: nginx
     container_name: nginx
     ports:
-      - 80:80
       - 443:443
     restart: always
+    volumes:
+      - web-data:/var/wwww/wordpress
+    env_file: .env
+    networks:
+      - inception_network
+  
+  database:
+    build: ./requirements/mariadb
+    image: mariadb
+    container_name: mariadb
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+    env_file: .env
+
+  wordpress:
+    build: ./requirements/wordpress
+    image: wordpress
+    container_name: wordpress
+    restart: always
+    volumes:
+      - web-data:/var/www/wordpress
+    env_file: .env
+    networks:
+      - inception_network
+
+volumes:
+  web-data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/jpeyron/data/web-data'
+
+networks:
+  inception_network:
+    driver: bridge
