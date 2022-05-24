@@ -4,6 +4,7 @@ RUN apt-get -yq update \
 	&& apt-get -yq install \
 		wget \
 		vim \
+		curl \
 		php7.3-fpm \
 		php7.3-common \
 		php7.3-mysql \
@@ -27,5 +28,16 @@ RUN apt-get -yq install \
 		php-xml \
 		php-xmlrpc \
 		php-zip
+
+COPY ./tools/init.sh .
+COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 		
-RUN wget -c https://wordpress.org/latest.tar.gz && tar -xvzf latest.tar.gz && rm -rf latest.tar.gz
+RUN mkdir -p /var/www/wordpress \
+	&& mkdir -p /var/run/php
+
+RUN wget -c https://wordpress.org/latest.tar.gz && tar -xvzf latest.tar.gz -C /var/www/wordpress/ && rm -rf latest.tar.gz
+RUN chmod 777 /var/www/wordpress
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+	&& chmod +x wp-cli.phar \
+	&& mv wp-cli.phar /usr/local/bin/wp
+	&& wp core download --allow-root

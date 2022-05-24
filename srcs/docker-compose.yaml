@@ -1,7 +1,6 @@
 services:
   nginx:
     build: ./requirements/nginx
-    image: nginx
     container_name: nginx
     ports:
       - 443:443
@@ -14,7 +13,6 @@ services:
   
   database:
     build: ./requirements/mariadb
-    image: mariadb
     container_name: mariadb
     restart: always
     volumes:
@@ -23,8 +21,9 @@ services:
 
   wordpress:
     build: ./requirements/wordpress
-    image: wordpress
     container_name: wordpress
+    ports:
+      - 9000:9000
     restart: always
     volumes:
       - web-data:/var/www/wordpress
@@ -39,6 +38,12 @@ volumes:
       type: 'none'
       o: 'bind'
       device: '/home/jpeyron/data/web-data'
+  db-data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/jpeyron/data/db-data'
 
 networks:
   inception_network:
