@@ -30,14 +30,18 @@ RUN apt-get -yq install \
 		php-zip
 
 COPY ./tools/init.sh .
+COPY ./conf/wp-config.php .
 COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 		
-RUN mkdir -p /var/www/wordpress \
+RUN mkdir -p /var/www/html \
 	&& mkdir -p /var/run/php
 
-RUN wget -c https://wordpress.org/latest.tar.gz && tar -xvzf latest.tar.gz -C /var/www/wordpress/ && rm -rf latest.tar.gz
-RUN chmod 777 /var/www/wordpress
+RUN wget -c https://wordpress.org/latest.tar.gz && tar -xvzf latest.tar.gz -C /var/www/html/ && rm -rf latest.tar.gz
+RUN chmod 777 /var/www/html/wordpress
+
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
 	&& chmod +x wp-cli.phar \
-	&& mv wp-cli.phar /usr/local/bin/wp
+	&& mv wp-cli.phar /usr/local/bin/wp \
 	&& wp core download --allow-root
+
+# ENTRYPOINT ["./init.sh"]

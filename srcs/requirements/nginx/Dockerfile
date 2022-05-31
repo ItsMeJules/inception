@@ -6,6 +6,8 @@ RUN apt-get -yq update && apt-get -yq install \
 	openssl \
 	vim
 
+EXPOSE 443
+
 # Making the ssl contract
 RUN mkdir /etc/nginx/ssl && \
 		openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
@@ -22,4 +24,4 @@ COPY ./tools/config.sh /
 # Making setup script executable
 RUN chmod +x ./config.sh
 
-#ENTRYPOINT [ "./config.sh" ]
+ENTRYPOINT [ "./config.sh" ]
