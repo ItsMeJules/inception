@@ -19,7 +19,9 @@ RUN ln -s /etc/nginx/sites-available/inception /etc/nginx/sites-enabled/inceptio
 COPY ./conf/nginx.conf /etc/nginx/sites-available/inception
 COPY ./tools/config.sh /
 
+EXPOSE 443
+
 # Making setup script executable
 RUN chmod +x ./config.sh
 
-#ENTRYPOINT [ "./config.sh" ]
+#ENTRYPOINT [ "bash", "config.sh" ]
