@@ -18,8 +18,12 @@ RUN mkdir /etc/nginx/ssl && \
 RUN ln -s /etc/nginx/sites-available/inception /etc/nginx/sites-enabled/inception
 
 # Copying files into the container
-COPY ./conf/nginx.conf /etc/nginx/sites-available/inception
-COPY ./tools/config.sh /
+COPY ./conf/default /etc/nginx/
+COPY ./conf/nginx.conf /etc/nginx/sites-available/
+COPY ./tools/config.sh .
+
+RUN ln -sf /dev/stdout /var/log/nginx/access.log
+RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
 # Making setup script executable
 RUN chmod +x ./config.sh
