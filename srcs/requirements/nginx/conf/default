@@ -1,0 +1,36 @@
+server {
+
+    include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	listen 443 ssl default_server;
+	listen [::]:443 ssl default_server;
+
+	ssl_certificate /etc/nginx/ssl/site.pem;
+	ssl_certificate_key /etc/nginx/ssl/site.key;
+	ssl_protocols TLSv1.2 TLSv1.3;
+
+	root /var/www/html/wordpress;
+	autoindex on;
+	error_page 404 /;
+	index index.php index.html index.htm index.nginx-debian.html;
+
+	server_name localhost;
+
+	location / {
+		try_files $uri $uri/ index.php?$args;
+	}
+
+    location ~ \.css {
+        add_header Content-Type text/css;
+    }
+
+    location ~ \.js {
+        add_header Content-Type application/x-javascript;
+    }
+
+    location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+		fastcgi_pass wordpress:9000;
+	}
+}

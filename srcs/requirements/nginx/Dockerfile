@@ -25,6 +25,8 @@ COPY ./tools/config.sh .
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
+EXPOSE 443
+
 # Making setup script executable
 RUN chmod +x ./config.sh
 

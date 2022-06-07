@@ -32,6 +32,8 @@ RUN apt-get -yq install \
 COPY ./tools/init.sh .
 COPY ./conf/wp-config.php .
 COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
+
+EXPOSE 9000
 		
 RUN mkdir -p /var/www/html \
 	&& mkdir -p /var/run/php
