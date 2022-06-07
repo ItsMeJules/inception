@@ -14,9 +14,6 @@ RUN mkdir /etc/nginx/ssl && \
 		-out /etc/nginx/ssl/site.pem -keyout /etc/nginx/ssl/site.key \
 		-subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=jpeyron/CN=site"	
 
-# Making the symbolic link between available sites and enabled sites
-RUN ln -s /etc/nginx/sites-available/inception /etc/nginx/sites-enabled/inception
-
 # Copying files into the container
 COPY ./conf/default /etc/nginx/
 COPY ./conf/nginx.conf /etc/nginx/sites-available/
@@ -24,8 +21,6 @@ COPY ./tools/config.sh .
 
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
-
-EXPOSE 443
 
 # Making setup script executable
 RUN chmod +x ./config.sh
