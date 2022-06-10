@@ -5,10 +5,11 @@ services:
     build: ./requirements/nginx
     container_name: nginx
     ports:
+      - 80:80
       - 443:443
     restart: always
     volumes:
-      - web-data:/var/wwww/html
+      - web-data:/var/www/html
     depends_on:
       - wordpress
     env_file: .env
@@ -18,6 +19,8 @@ services:
   database:
     build: ./requirements/mariadb
     container_name: mariadb
+    ports:
+      - 3306:3306
     restart: always
     volumes:
       - db-data:/var/lib/mysql

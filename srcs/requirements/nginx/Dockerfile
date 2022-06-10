@@ -11,8 +11,8 @@ EXPOSE 443
 # Making the ssl contract
 RUN mkdir /etc/nginx/ssl && \
 		openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
-		-out /etc/nginx/ssl/site.pem -keyout /etc/nginx/ssl/site.key \
-		-subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=jpeyron/CN=site"	
+		-out /etc/ssl/certs/site.crt -keyout /etc/ssl/private/site.key \
+		-subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=jpeyron/CN=jpeyron.42.fr"	
 
 # Copying files into the container
 COPY ./conf/default /etc/nginx/
