@@ -2,7 +2,7 @@ FROM debian:buster
 EXPOSE 3306
 
 RUN apt-get -yq update \
-	&& apt-get upgrade \
+	&& apt-get -yq upgrade \
 	&& apt-get -yq install \
 		wget \
 		vim \
