@@ -6,11 +6,12 @@ ${NAME}: build up
 
 build:
 		sudo docker-compose -f srcs/docker-compose.yml build
-up:
-		sudo mkdir -p /home/jpeyron/
+volume:
+		sudo rm -rf /home/jpeyron/data
 		sudo mkdir -p /home/jpeyron/data
-		sudo mkdir -p /home/jpeyron/data/db-data
 		sudo mkdir -p /home/jpeyron/data/web-data
+		sudo mkdir -p /home/jpeyron/data/db-data
+up:
 		sudo docker-compose -f srcs/docker-compose.yml up -d --remove-orphans
 down:
 		sudo docker-compose -f srcs/docker-compose.yml down
@@ -19,9 +20,9 @@ stop:
 rm: stop
 		sudo docker-compose -f srcs/docker-compose.yml rm
 clean: rm
-		sudo docker rmi mariadb
-		sudo docker rmi nginx
-		sudo docker rmi wordpress
+		sudo docker rmi srcs_mariadb
+		sudo docker rmi srcs_nginx
+		sudo docker rmi srcs_wordpress
 
 re: clean ${NAME}
 

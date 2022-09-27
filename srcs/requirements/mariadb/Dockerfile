@@ -1,21 +1,12 @@
 FROM debian:buster
-EXPOSE 3306
 
-RUN apt-get -yq update \
-	&& apt-get -yq upgrade \
-	&& apt-get -yq install \
-		wget \
-		vim \
-		mariadb-server \
-		procps
+WORKDIR /tmp
 
-RUN mkdir /run/mysqld && chown mysql /run/mysqld \
-	&& mysql_install_db --user=mysql --datadir=/var/lib/mysql --auth-root-authentication-method=normal
+RUN apt-get update && apt-get upgrade -y && apt-get install -y mariadb-server procps
 
-COPY ./tools/init.sh .
-COPY ./conf/my.cnf /etc/mysql/my.cnf
+COPY tools/start_db.sh .
+COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d
 
-RUN chmod 777 /var/lib/mysql
-RUN chmod 777 ./init.sh
+RUN chmod +x start_db.sh
 
-ENTRYPOINT ["./init.sh"]
+CMD ["sh", "start_db.sh"]
