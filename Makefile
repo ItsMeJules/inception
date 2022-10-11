@@ -20,9 +20,9 @@ stop:
 rm: stop
 		sudo docker compose -f srcs/docker-compose.yml rm
 clean: rm
-		sudo docker rmi srcs_mariadb
-		sudo docker rmi srcs_nginx
-		sudo docker rmi srcs_wordpress
+		sudo docker rmi srcs-mariadb
+		sudo docker rmi srcs-nginx
+		sudo docker rmi srcs-wordpress
 
 re: clean ${NAME}
 
